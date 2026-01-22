@@ -1,18 +1,19 @@
 from pydantic_settings import BaseSettings
 
+
 class Settings(BaseSettings):
-    DATABASE_URL: str = ""
+    database_hostname: str = "localhost"
+    database_port: str = "5432"
+    database_name: str = "fastapi"
+    database_username: str = "postgres"
+    database_password: str = "password123"
+
+    secret_key: str
+    algorithm: str
+    access_token_expire_minutes: int
+
+    class Config:
+        env_file = ".env"
+
 
 settings = Settings()
-
-# move logic OUTSIDE the class
-def get_database_url():
-    if not settings.DATABASE_URL:
-        return "sqlite:///./socialmedia.db"
-
-    if settings.DATABASE_URL.startswith("postgres://"):
-        return settings.DATABASE_URL.replace(
-            "postgres://", "postgresql://", 1
-        )
-
-    return settings.DATABASE_URL
