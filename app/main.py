@@ -1,24 +1,17 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-
 from . import models, schemas
 from .database import engine, get_db, Base
 from .routers import post, user, auth, vote
 from .config import settings
 
-print(settings.database_username)
-
-#Base.metadata.create_all(bind=engine)
-
 app = FastAPI()
-
-origins = ["https://www.google.com", "https://www.youtube.com"]
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins = origins,
-    allow_credentials=True,
+    allow_origins=["*"],
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -31,10 +24,6 @@ app.include_router(vote.router)
 @app.get("/")
 def read_root():
     return {"Hello": "Welcome to my api!!!"}
-
-
-
-
 
     
 
